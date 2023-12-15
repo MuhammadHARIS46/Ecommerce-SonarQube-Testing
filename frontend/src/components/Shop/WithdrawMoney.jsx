@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
@@ -116,6 +117,11 @@ const WithdrawMoney = () => {
         <div
           className={`${styles.button} text-white !h-[42px] !rounded`}
           onClick={() => (availableBalance < 50 ? error() : setOpen(true))}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              (availableBalance < 50 ? error() : setOpen(true));
+            }
+          }}
         >
           Withdraw
         </div>

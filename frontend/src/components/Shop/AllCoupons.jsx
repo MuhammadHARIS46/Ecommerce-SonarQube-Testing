@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import axios from "axios";
@@ -107,8 +108,7 @@ const AllCoupons = () => {
 
   const row = [];
 
-  coupouns &&
-  coupouns.forEach((item) => {
+  coupouns?.forEach((item) => {
       row.push({
         id: item._id,
         name: item.name,
@@ -127,6 +127,13 @@ const AllCoupons = () => {
             <div
               className={`${styles.button} !w-max !h-[45px] px-3 !rounded-[5px] mr-3 mb-3`}
               onClick={() => setOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setOpen(true);
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               <span className="text-white">Create Coupon Code</span>
             </div>
@@ -146,13 +153,20 @@ const AllCoupons = () => {
                     size={30}
                     className="cursor-pointer"
                     onClick={() => setOpen(false)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        setOpen(false);
+                      }
+                    }}
+                    role="button"
+                    tabIndex={0}
                   />
                 </div>
                 <h5 className="text-[30px] font-Poppins text-center">
                   Create Coupon code
                 </h5>
                 {/* create coupoun code */}
-                <form onSubmit={handleSubmit} aria-required={true}>
+                <form onSubmit={handleSubmit}>
                   <br />
                   <div>
                     <label className="pb-2">
@@ -219,8 +233,8 @@ const AllCoupons = () => {
                       <option value="Choose your selected products">
                         Choose a selected product
                       </option>
-                      {products &&
-                        products.map((i) => (
+                      {
+                        products?.map((i) => (
                           <option value={i.name} key={i.name}>
                             {i.name}
                           </option>

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useEffect } from "react";
 import { AiOutlineArrowRight, AiOutlineMoneyCollect } from "react-icons/ai";
 import styles from "../../styles/styles";
 import { Link } from "react-router-dom";
@@ -75,8 +76,7 @@ const DashboardHero = () => {
 
   const row = [];
 
-  orders &&
-    orders.forEach((item) => {
+    orders?.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.reduce((acc, item) => acc + item.qty, 0),
@@ -120,7 +120,7 @@ const DashboardHero = () => {
             </h3>
           </div>
           <h5 className="pt-2 pl-[5px] text-[22px] font-[500]">
-            {orders && orders.length}
+            {  orders?.length}
           </h5>
           <Link to="/dashboard-orders">
             <h5 className="pt-4 pl-2 text-[#077f9c]">View Orders</h5>
@@ -141,7 +141,7 @@ const DashboardHero = () => {
             </h3>
           </div>
           <h5 className="pt-2 pl-[5px] text-[22px] font-[500]">
-            {product && product.length}
+            {product?.length}
           </h5>
           <Link to="/dashboard-products">
             <h5 className="pt-4 pl-2 text-[#077f9c]">View Products</h5>

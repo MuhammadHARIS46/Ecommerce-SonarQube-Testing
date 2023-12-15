@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import React, { useEffect } from "react";
@@ -5,8 +6,6 @@ import { AiOutlineDelete, AiOutlineEye } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { deleteEvent, getAllEventsShop } from "../../redux/actions/event";
-import { getAllProductsShop } from "../../redux/actions/product";
-import { deleteProduct } from "../../redux/actions/product";
 import Loader from "../Layout/Loader";
 
 const AllEvents = () => {
@@ -97,8 +96,7 @@ const AllEvents = () => {
 
   const row = [];
 
-  events &&
-  events.forEach((item) => {
+  events?.forEach((item) => {
       row.push({
         id: item._id,
         name: item.name,

@@ -1,5 +1,4 @@
 import React from "react";
-import { backend_url } from "../../server";
 import styles from "../../styles/styles";
 import CountDown from "./CountDown";
 import { Link } from "react-router-dom";
@@ -7,30 +6,30 @@ import { useDispatch, useSelector } from "react-redux";
 import { addTocart } from "../../redux/actions/cart";
 import { toast } from "react-toastify";
 
-const EventCard = ({ active, data }) => {
+const EventCard = ({ data }) => {
   const { cart } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
 
   const addToCartHandler = (data) => {
-    const isItemExists = cart && cart.find((i) => i._id === data._id);
+    const isItemExists = cart?.find((i) => i._id === data._id);
+  
     if (isItemExists) {
       toast.error("Item already in cart!");
-    } else {
-      if (data.stock < 1) {
-        toast.error("Product stock limited!");
-      } else {
-        const cartData = { ...data, qty: 1 };
-        dispatch(addTocart(cartData));
-        toast.success("Item added to cart successfully!");
-      }
+      return;
     }
+  
+    if (data.stock < 1) {
+      toast.error("Product stock limited!");
+      return;
+    }
+  
+    const cartData = { ...data, qty: 1 };
+    dispatch(addTocart(cartData));
+    toast.success("Item added to cart successfully!");
   };
+  
   return (
-    <div
-      className={`w-full block bg-white rounded-lg ${
-        active ? "unset" : "mb-12"
-      } lg:flex p-2`}
-    >
+    <div className={`w-full block bg-white rounded-lg ${"mb-12"} lg:flex p-2`}>
       <div className="w-full lg:-w[50%] m-auto">
         <img src={data.images[0]} alt="" />
       </div>
@@ -59,6 +58,13 @@ const EventCard = ({ active, data }) => {
           <div
             className={`${styles.button} text-[#fff] ml-5`}
             onClick={() => addToCartHandler(data)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                addToCartHandler(data);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             Add to cart
           </div>

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import React, { useEffect } from "react";
@@ -70,8 +71,7 @@ const AllOrders = () => {
 
   const row = [];
 
-  orders &&
-    orders.forEach((item) => {
+    orders?.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,

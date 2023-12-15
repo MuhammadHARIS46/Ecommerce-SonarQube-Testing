@@ -6,9 +6,9 @@ import styles from "../../styles/styles";
 const Navbar = ({ active }) => {
   return (
     <div className={`block md:${styles.noramlFlex}`}>
-      {navItems &&
-        navItems.map((i, index) => (
-          <div className="flex">
+      {
+        navItems?.map((i, index) => (
+          <div className="flex" key={index}>
             <Link
               to={i.url}
               className={`${

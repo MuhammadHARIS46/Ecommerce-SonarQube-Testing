@@ -1,7 +1,6 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "../../styles/styles";
-import { useEffect } from "react";
 import {
   CardNumberElement,
   CardCvcElement,
@@ -53,7 +52,7 @@ const Payment = () => {
   const order = {
     cart: orderData?.cart,
     shippingAddress: orderData?.shippingAddress,
-    user: user && user,
+    user: user || null, // Include user only if it's truthy, otherwise set to null
     totalPrice: orderData?.totalPrice,
   };
 
@@ -106,48 +105,50 @@ const Payment = () => {
           "Content-Type": "application/json",
         },
       };
-
+  
       const { data } = await axios.post(
         `${server}/payment/process`,
         paymentData,
         config
       );
-
+  
       const client_secret = data.client_secret;
-
+  
       if (!stripe || !elements) return;
+  
       const result = await stripe.confirmCardPayment(client_secret, {
         payment_method: {
           card: elements.getElement(CardNumberElement),
         },
       });
-
+  
       if (result.error) {
         toast.error(result.error.message);
-      } else {
-        if (result.paymentIntent.status === "succeeded") {
-          order.paymnentInfo = {
-            id: result.paymentIntent.id,
-            status: result.paymentIntent.status,
-            type: "Credit Card",
-          };
-
-          await axios
-            .post(`${server}/order/create-order`, order, config)
-            .then((res) => {
-              setOpen(false);
-              navigate("/order/success");
-              toast.success("Order successful!");
-              localStorage.setItem("cartItems", JSON.stringify([]));
-              localStorage.setItem("latestOrder", JSON.stringify([]));
-              window.location.reload();
-            });
-        }
+        return;
       }
+  
+      if (result.paymentIntent.status !== "succeeded") return;
+  
+      order.paymnentInfo = {
+        id: result.paymentIntent.id,
+        status: result.paymentIntent.status,
+        type: "Credit Card",
+      };
+  
+      const res = await axios.post(`${server}/order/create-order`, order, config);
+  
+      setOpen(false);
+      navigate("/order/success");
+      toast.success("Order successful!");
+      localStorage.setItem("cartItems", JSON.stringify([]));
+      localStorage.setItem("latestOrder", JSON.stringify([]));
+      window.location.reload();
+      return res
     } catch (error) {
       toast.error(error);
     }
   };
+  
 
   const cashOnDeliveryHandler = async (e) => {
     e.preventDefault();
@@ -215,6 +216,13 @@ const PaymentInfo = ({
           <div
             className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
             onClick={() => setSelect(1)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setSelect(1);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             {select === 1 ? (
               <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
@@ -234,9 +242,9 @@ const PaymentInfo = ({
                   <label className="block pb-2">Name On Card</label>
                   <input
                     required
-                    placeholder={user && user.name}
+                    placeholder={ user?.name}
                     className={`${styles.input} !w-[95%] text-[#444]`}
-                    value={user && user.name}
+                    value={ user?.name}
                   />
                 </div>
                 <div className="w-[50%]">
@@ -326,6 +334,13 @@ const PaymentInfo = ({
           <div
             className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
             onClick={() => setSelect(2)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setSelect(2);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             {select === 2 ? (
               <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />
@@ -342,6 +357,13 @@ const PaymentInfo = ({
             <div
               className={`${styles.button} !bg-[#f63b60] text-white h-[45px] rounded-[5px] cursor-pointer text-[18px] font-[600]`}
               onClick={() => setOpen(true)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setOpen(true);
+                }
+              }}
+              role="button"
+              tabIndex={0}
             >
               Pay Now
             </div>
@@ -369,6 +391,13 @@ const PaymentInfo = ({
           <div
             className="w-[25px] h-[25px] rounded-full bg-transparent border-[3px] border-[#1d1a1ab4] relative flex items-center justify-center"
             onClick={() => setSelect(3)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setSelect(3);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             {select === 3 ? (
               <div className="w-[13px] h-[13px] bg-[#1d1a1acb] rounded-full" />

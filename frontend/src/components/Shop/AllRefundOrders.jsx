@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button } from "@material-ui/core";
 import { DataGrid } from "@material-ui/data-grid";
 import React, { useEffect } from "react";
@@ -17,7 +18,7 @@ const AllRefundOrders = () => {
     dispatch(getAllOrdersOfShop(seller._id));
   }, [dispatch]);
 
-  const refundOrders = orders && orders.filter((item) => item.status === "Processing refund"  || item.status === "Refund Success");
+  const refundOrders = orders?.filter((item) => item.status === "Processing refund"  || item.status === "Refund Success");
 
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -72,8 +73,7 @@ const AllRefundOrders = () => {
 
   const row = [];
 
-  refundOrders &&
-  refundOrders.forEach((item) => {
+  refundOrders?.forEach((item) => {
       row.push({
         id: item._id,
         itemsQty: item.cart.length,

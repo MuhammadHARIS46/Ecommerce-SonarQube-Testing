@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
@@ -7,7 +8,6 @@ import {
 } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { Link } from "react-router-dom";
-import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
@@ -23,9 +23,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   const dispatch = useDispatch();
   const [count, setCount] = useState(1);
   const [click, setClick] = useState(false);
-  //   const [select, setSelect] = useState(false);
 
-  const handleMessageSubmit = () => {};
+  const handleMessageSubmit = () => {
+    console.log("submitted")
+  };
 
   const decrementCount = () => {
     if (count > 1) {
@@ -38,7 +39,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   };
 
   const addToCartHandler = (id) => {
-    const isItemExists = cart && cart.find((i) => i._id === id);
+    const isItemExists = cart?.find((i) => i._id === id);
     if (isItemExists) {
       toast.error("Item already in cart!");
     } else {
@@ -53,7 +54,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   };
 
   useEffect(() => {
-    if (wishlist && wishlist.find((i) => i._id === data._id)) {
+    if (wishlist?.find((i) => i._id === data._id)) {
       setClick(true);
     } else {
       setClick(false);
@@ -66,7 +67,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   };
 
   const handleInputChange = (e) => {
-    const minValue = 0;
     const newValue = Math.max(data?.minimum || 1, e.target.value);
     setCount(newValue);
   };
@@ -87,6 +87,13 @@ const ProductDetailsCard = ({ setOpen, data }) => {
               size={30}
               className="absolute right-3 top-3 z-50"
               onClick={() => setOpen(false)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setOpen(false);
+                }
+              }}
+              role="button"
+              tabIndex={0}
             />
 
             <div className="block w-full 800px:flex">
@@ -94,7 +101,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                 <div className="w-full flex flex-row">
                   <div className="w-1/4">
                     <img
-                      src={data.images && data.images[0]}
+                      src={data?.images[0]}
                       alt=""
                       className="w-[300px] h-[300px]"
                     />
@@ -107,13 +114,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                     </div>
                     <div className="desc ml-5">
                       <p>{data.description}</p>
-                      {/* <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing
-                        elit. Similique, nisi quae, illum recusandae omnis nemo
-                        aut at dolorem possimus dolor inventore expedita
-                        distinctio labore delectus sequi dolores corporis minus
-                        enim! Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquam saepe sunt fugit. Dolorum nam voluptatem, maxime corrupti perferendis numquam cum ea repellat, reiciendis ad quis minima sit adipisci quidem? Ab tenetur cum possimus ratione similique nam dolores impedit? Non ipsam reprehenderit nobis provident. Reiciendis, unde itaque! Optio, molestiae delectus! Illo ad libero odit ratione pariatur soluta tenetur molestias dolorem! Odit, pariatur. Id impedit, magnam dignissimos consectetur cupiditate laboriosam ipsam numquam quo sunt rerum repellat commodi doloremque suscipit recusandae, minus quibusdam iusto aut itaque molestiae totam quaerat rem. Voluptate, quaerat eaque. Veritatis cumque sunt incidunt eos, minima suscipit voluptas modi similique!
-                      </p> */}
                     </div>
                   </div>
                 </div>
@@ -141,7 +141,6 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                     Send Message <AiOutlineMessage className="ml-1" />
                   </span>
                 </div>
-                {/* <h5 className="text-[16px] text-[red] mt-5">(50) Sold out</h5> */}
               </div>
 
               <div className="w-full 800px:w-[50%] pt-5 pl-[5px] pr-[5px]">
@@ -180,15 +179,29 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                         size={30}
                         className="cursor-pointer"
                         onClick={() => removeFromWishlistHandler(data)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            removeFromWishlistHandler(data);
+                          }
+                        }}
                         color={click ? "red" : "#333"}
                         title="Remove from wishlist"
+                        role="button"
+                        tabIndex={0}
                       />
                     ) : (
                       <AiOutlineHeart
                         size={30}
                         className="cursor-pointer"
                         onClick={() => addToWishlistHandler(data)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            addToWishlistHandler(data);
+                          }
+                        }}
                         title="Add to wishlist"
+                        role="button"
+                        tabIndex={0}
                       />
                     )}
                   </div>
@@ -196,6 +209,13 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                 <div
                   className={`${styles.button} mt-6 rounded-[4px] h-11 flex items-center`}
                   onClick={() => addToCartHandler(data._id)}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      addToCartHandler(data._id);
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   <span className="text-[#fff] flex items-center">
                     Add to cart <AiOutlineShoppingCart className="ml-1" />

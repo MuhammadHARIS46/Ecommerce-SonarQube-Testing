@@ -11,12 +11,19 @@ const DropDown = ({ categoriesData, setDropDown }) => {
   };
   return (
     <div className="pb-4 w-[270px] bg-[#fff] absolute z-30 rounded-b-md shadow-sm">
-      {categoriesData &&
-        categoriesData.map((i, index) => (
+      {
+        categoriesData?.map((i, index) => (
           <div
             key={index}
             className={`${styles.noramlFlex}`}
             onClick={() => submitHandle(i)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                submitHandle(i);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             <img
               src={i.image_Url}
@@ -27,7 +34,7 @@ const DropDown = ({ categoriesData, setDropDown }) => {
                 marginLeft: "10px",
                 userSelect: "none",
               }}
-              alt=""
+              alt="hello"
             />
             <h3 className="m-3 cursor-pointer select-none">{i.title}</h3>
           </div>

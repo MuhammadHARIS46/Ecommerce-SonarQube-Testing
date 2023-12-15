@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlusCircle } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
@@ -128,8 +129,8 @@ const CreateEvent = () => {
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="Choose a category">Choose a category</option>
-            {categoriesData &&
-              categoriesData.map((i) => (
+            {
+              categoriesData?.map((i) => (
                 <option value={i.title} key={i.title}>
                   {i.title}
                 </option>
@@ -237,8 +238,8 @@ const CreateEvent = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
-            {images &&
-              images.map((i) => (
+            {
+              images?.map((i) => (
                 <img
                   src={URL.createObjectURL(i)}
                   key={i}

@@ -1,15 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import styles from "../../styles/styles";
 import { BsFillBagFill } from "react-icons/bs";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
-import { backend_url, server } from "../../server";
+import { server } from "../../server";
 import axios from "axios";
 import { toast } from "react-hot-toast";
-// import { toast } from "react-toastify";
 const OrderDetails = () => {
-  const { orders, isLoading } = useSelector((state) => state.order);
+  const { orders } = useSelector((state) => state.order);
   const { seller } = useSelector((state) => state.seller);
   const dispatch = useDispatch();
   const [status, setStatus] = useState("");
@@ -21,7 +21,7 @@ const OrderDetails = () => {
     dispatch(getAllOrdersOfShop(seller._id));
   }, [dispatch]);
 
-  const data = orders && orders.find((item) => item._id === id);
+  const data = orders?.find((item) => item._id === id);
 
   const orderUpdateHandler = async (e) => {
     await axios
@@ -89,9 +89,9 @@ const OrderDetails = () => {
       {/* order items */}
       <br />
       <br />
-      {data &&
+      {
         data?.cart.map((item, index) => (
-          <div className="w-full flex items-start mb-5">
+          <div className="w-full flex items-start mb-5" key={index}>
             <img src={item.images[0]} alt="" className="w-[80x] h-[80px]" />
             <div className="w-full">
               <h5 className="pl-3 text-[20px]">{item.name}</h5>

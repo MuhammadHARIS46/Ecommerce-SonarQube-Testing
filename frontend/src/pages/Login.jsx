@@ -1,9 +1,7 @@
 import { React, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
-// import styles from "../../styles/styles";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { server } from "../../server";
 import toast from "react-hot-toast";
 import Spinner from "../components/loaders/Spinner";
 import { useDispatch } from "react-redux";
@@ -32,7 +30,6 @@ const Login = () => {
         console.log(data);
         localStorage.setItem("token", data.authToken);
         setTimeout(function () {
-          // Code to be executed after two seconds
           dispatch(loadUser(data));
           console.log("Action performed after two seconds");
         }, 100);

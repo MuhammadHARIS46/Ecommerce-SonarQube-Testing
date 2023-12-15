@@ -1,9 +1,7 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import styles from "../../styles/styles";
-import { Country, State, City } from "country-state-city";
-import { useNavigate } from "react-router-dom";
+import { Country, City } from "country-state-city";
 import { useSelector } from "react-redux";
-import { useEffect } from "react";
 import axios from "axios";
 import { server } from "../../server";
 import { toast } from "react-hot-toast";
@@ -22,7 +20,6 @@ const Checkout = () => {
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [discountPrice, setDiscountPrice] = useState(null);
   const [loader, setLoader] = useState(false);
-  const navigate = useNavigate();
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -91,8 +88,8 @@ const Checkout = () => {
       const shopId = res.data.couponCode?.shopId;
       const couponCodeValue = res.data.couponCode?.value;
       if (res.data.couponCode !== null) {
-        const isCouponValid =
-          cart && cart.filter((item) => item.shopId === shopId);
+        const isCouponValid = cart?.filter((item) => item.shopId === shopId);
+
 
         if (isCouponValid.length === 0) {
           toast.error("Coupon code is not valid for this shop");
@@ -158,6 +155,13 @@ const Checkout = () => {
       <div
         className={`${styles.button} w-[150px] 800px:w-[280px] mt-10`}
         onClick={paymentSubmit}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            paymentSubmit();
+          }
+        }}
+        role="button"
+        tabIndex={0}
       >
         <h5 className="text-white">
           {loader ? (
@@ -196,7 +200,7 @@ const ShippingInfo = ({
             <label className="block pb-2">Full Name</label>
             <input
               type="text"
-              value={user && user.name}
+              value={user?.name}
               required
               className={`${styles.input} !w-[95%]`}
             />
@@ -205,7 +209,7 @@ const ShippingInfo = ({
             <label className="block pb-2">Email Address</label>
             <input
               type="email"
-              value={user && user.email}
+              value={user?.email}
               required
               className={`${styles.input}`}
             />
@@ -218,7 +222,7 @@ const ShippingInfo = ({
             <input
               type="number"
               required
-              value={user && user.phoneNumber}
+              value={user?.phoneNumber}
               className={`${styles.input} !w-[95%]`}
             />
           </div>
@@ -245,8 +249,8 @@ const ShippingInfo = ({
               <option className="block pb-2" value="">
                 Choose your country
               </option>
-              {Country &&
-                Country.getAllCountries().map((item) => (
+              {
+                Country?.getAllCountries().map((item) => (
                   <option key={item.isoCode} value={item.isoCode}>
                     {item.name}
                   </option>
@@ -263,8 +267,8 @@ const ShippingInfo = ({
               <option className="block pb-2" value="">
                 Choose your City
               </option>
-              {City &&
-                City.getCitiesOfCountry(country).map((item) => (
+              {
+                City?.getCitiesOfCountry(country).map((item) => (
                   <option key={item.isoCode} value={item.isoCode}>
                     {item.name}
                   </option>
@@ -298,17 +302,11 @@ const ShippingInfo = ({
 
         <div></div>
       </form>
-      {/* <h5
-        className="text-[18px] cursor-pointer inline-block"
-        onClick={() => setUserInfo(!userInfo)}
-      >
-        Choose From saved address
-      </h5> */}
       {userInfo && (
         <div>
-          {user &&
-            user.addresses.map((item, index) => (
-              <div className="w-full flex mt-1">
+          {
+            user?.addresses.map((item, index) => (
+              <div className="w-full flex mt-1" key={index}>
                 <input
                   type="checkbox"
                   className="mr-3"

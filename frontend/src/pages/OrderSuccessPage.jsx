@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import Footer from "../components/Layout/Footer";
 import Header from "../components/Layout/Header";
@@ -7,16 +8,13 @@ import { server } from "../server";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import Loader from "../components/Layout/Loader";
 import { emptyCart } from "../redux/actions/cart";
 
 const OrderSuccessPage = () => {
-  const [orderData, setOrderData] = useState([]);
   const { user } = useSelector((state) => state.user);
   const params = new URL(document.location).searchParams;
   const session_id = params.get("session_id");
-  const navigate = useNavigate();
   const [loader, setLoader] = useState(true);
   const dispatch = useDispatch();
 
@@ -25,10 +23,11 @@ const OrderSuccessPage = () => {
     const order = {
       cart: orderData?.cart,
       shippingAddress: orderData?.shippingAddress,
-      user: user && user,
+      user: user || null, // Include user only if it's truthy, otherwise set to null
       totalPrice: orderData?.totalPrice,
       paymentInfo: { id: session_id, status: "succeeded", type: "Stripe" },
     };
+
     (async () => {
       setLoader(true);
       if (session_id && order) {

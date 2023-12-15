@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
   AiFillHeart,
@@ -8,7 +10,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
-import { backend_url, server } from "../../server";
+import {  server } from "../../server";
 import styles from "../../styles/styles";
 import {
   addToWishlist,
@@ -30,7 +32,7 @@ const ProductDetails = ({ data }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(getAllProductsShop(data && data?.shop._id));
+    dispatch(getAllProductsShop(data?.shop._id));
     if (wishlist && wishlist.find((i) => i._id === data?._id)) {
       setClick(true);
     } else {
@@ -65,7 +67,7 @@ const ProductDetails = ({ data }) => {
   };
 
   const addToCartHandler = (id) => {
-    const isItemExists = cart && cart.find((i) => i._id === id);
+    const isItemExists =  cart?.find((i) => i._id === id);
     if (isItemExists) {
       toast.error("Item already in cart!");
     } else {
@@ -84,8 +86,8 @@ const ProductDetails = ({ data }) => {
     product.reduce((acc, product) => acc + product.reviews.length, 0);
 
   const totalRatings =
-    product &&
-    product.reduce(
+    
+    product?.reduce(
       (acc, product) =>
         acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
       0
@@ -124,13 +126,13 @@ const ProductDetails = ({ data }) => {
           <div className="block w-full ">
             <div className="w-full md:w-[50%]">
               <img
-                src={data && data.images[select]}
+                src={ data?.images[select]}
                 alt=""
                 className="w-[80%]"
               />
               <div className="w-full flex">
-                {data &&
-                  data.images.map((i, index) => (
+                {
+                  data?.images.map((i, index) => (
                     <div
                       className={`${
                         select === 0 ? "border" : "null"
@@ -141,6 +143,13 @@ const ProductDetails = ({ data }) => {
                         alt=""
                         className="h-[200px] overflow-hidden mr-3 mt-3"
                         onClick={() => setSelect(index)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            setSelect(index);
+                          }
+                        }}
+                        role="button"
+                        tabIndex={0}
                       />
                     </div>
                   ))}
@@ -178,8 +187,7 @@ const ProductDetails = ({ data }) => {
                     onChange={handleInputChange}
                     defaultValue={data.minimum || count}
                   />
-                  {/* {count}
-                    </input> */}
+
                   <button
                     className="bg-gradient-to-r from-teal-400 to-teal-500 text-white font-bold rounded-l px-4 py-2 shadow-lg hover:opacity-75 transition duration-300 ease-in-out"
                     onClick={incrementCount}
@@ -193,16 +201,30 @@ const ProductDetails = ({ data }) => {
                       size={30}
                       className="cursor-pointer"
                       onClick={() => removeFromWishlistHandler(data)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          removeFromWishlistHandler(data);
+                        }
+                      }}
                       color={click ? "red" : "#333"}
                       title="Remove from wishlist"
+                      role="button"
+                      tabIndex={0}
                     />
                   ) : (
                     <AiOutlineHeart
                       size={30}
                       className="cursor-pointer"
                       onClick={() => addToWishlistHandler(data)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          addToWishlistHandler(data);
+                        }
+                      }}
                       color={click ? "red" : "#333"}
                       title="Add to wishlist"
+                      role="button"
+                      tabIndex={0}
                     />
                   )}
                 </div>
@@ -210,6 +232,13 @@ const ProductDetails = ({ data }) => {
               <div
                 className={`${styles.button} !mt-6 !rounded !h-11 flex items-center`}
                 onClick={() => addToCartHandler(data._id)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    addToCartHandler(data._id);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <span className="text-white flex items-center">
                   Add to cart <AiOutlineShoppingCart className="ml-1" />
@@ -236,6 +265,13 @@ const ProductDetails = ({ data }) => {
                 <div
                   className={`${styles.button} bg-[#6443d1] mt-4 !rounded !h-11`}
                   onClick={handleMessageSubmit}
+                  onKeyDown={(e) => {
+                    if (e.key === "Enter" || e.key === " ") {
+                      handleMessageSubmit();
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   <span className="text-white flex items-center">
                     Send Message <AiOutlineMessage className="ml-1" />
@@ -271,40 +307,61 @@ const ProductDetailsInfo = ({
     <div className="bg-[#f5f6fb] px-3 800px:px-10 py-2 rounded">
       <div className="w-full flex justify-between border-b pt-10 pb-2">
         <div className="relative">
-          <h5
+          <div
             className={
               "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
             }
             onClick={() => setActive(1)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setActive(1);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             Product Details
-          </h5>
+          </div>
           {active === 1 ? (
             <div className={`${styles.active_indicator}`} />
           ) : null}
         </div>
         <div className="relative">
-          <h5
+          <div
             className={
               "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
             }
             onClick={() => setActive(2)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setActive(2);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             Product Reviews
-          </h5>
+          </div>
           {active === 2 ? (
             <div className={`${styles.active_indicator}`} />
           ) : null}
         </div>
         <div className="relative">
-          <h5
+          <div
             className={
               "text-[#000] text-[18px] px-1 leading-5 font-[600] cursor-pointer 800px:text-[20px]"
             }
             onClick={() => setActive(3)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setActive(3);
+              }
+            }}
+            role="button"
+            tabIndex={0}
           >
             Seller Information
-          </h5>
+          </div>
           {active === 3 ? (
             <div className={`${styles.active_indicator}`} />
           ) : null}
@@ -320,8 +377,8 @@ const ProductDetailsInfo = ({
 
       {active === 2 ? (
         <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
-          {data &&
-            data.reviews.map((item, index) => (
+          {
+            data?.reviews.map((item, index) => (
               <div className="w-full flex my-2">
                 <img
                   src={item.user.avatar}
@@ -339,7 +396,7 @@ const ProductDetailsInfo = ({
             ))}
 
           <div className="w-full flex justify-center">
-            {data && data.reviews.length === 0 && (
+            {data?.reviews.length === 0 && (
               <h5>No Reviews have for this product!</h5>
             )}
           </div>
@@ -377,7 +434,7 @@ const ProductDetailsInfo = ({
               <h5 className="font-[600] pt-3">
                 Total Products:{" "}
                 <span className="font-[500]">
-                  {products && products.length}
+                  {products?.length}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">

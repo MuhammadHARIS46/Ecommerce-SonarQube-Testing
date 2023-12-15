@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../../styles/styles";
-import { categoriesData, productData } from "../../static/data";
+import { categoriesData } from "../../static/data";
 import {
   AiOutlineHeart,
   AiOutlineSearch,
@@ -13,7 +13,6 @@ import { CgProfile } from "react-icons/cg";
 import DropDown from "./DropDown";
 import Navbar from "./Navbar";
 import { useDispatch, useSelector } from "react-redux";
-import { backend_url } from "../../server";
 import Cart from "../cart/Cart";
 import Wishlist from "../Wishlist/Wishlist";
 import { RxCross1 } from "react-icons/rx";
@@ -38,11 +37,10 @@ const Header = ({ activeHeading }) => {
     const term = e.target.value;
     setSearchTerm(term);
 
-    const filteredProducts =
-      allProducts &&
-      allProducts.filter((product) =>
-        product.name.toLowerCase().includes(term.toLowerCase())
-      );
+    const filteredProducts = allProducts?.filter((product) =>
+    product.name.toLowerCase().includes(term.toLowerCase())
+  ) || [];
+  
     setSearchData(
       filteredProducts?.length > 7
         ? filteredProducts?.slice(7)
@@ -103,10 +101,10 @@ const Header = ({ activeHeading }) => {
             />
             {searchData && searchData.length !== 0 ? (
               <div className="absolute w-full   flex flex-col gap-3 rounded-e-sm bg-slate-50 shadow-sm-2 z-[9] p-4">
-                {searchData &&
-                  searchData.map((i, index) => {
+                {
+                  searchData?.map((i) => {
                     return (
-                      <Link to={`/product/${i._id}`}>
+                      <Link to={`/product/${i._id}`}key={i._id}>
                         <div className="w-full py-2 px-1 flex items-start-py-3 hover:bg-[#e3e1e1]">
                           <img
                             src={i.images[0]}
@@ -141,7 +139,16 @@ const Header = ({ activeHeading }) => {
           className={`${styles.section} relative ${styles.noramlFlex} justify-between`}
         >
           {/* categories */}
-          <div onClick={() => setDropDown(!dropDown)}>
+          <div
+            onClick={() => setDropDown(!dropDown)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setDropDown(!dropDown);
+              }
+            }}
+            role="button"
+            tabIndex={0}
+          >
             <div className="relative h-[60px] mt-[10px] w-[270px] hidden 1000px:block">
               <BiMenuAltLeft size={30} className="absolute top-3 left-2" />
               <button
@@ -172,6 +179,13 @@ const Header = ({ activeHeading }) => {
               <div
                 className="relative cursor-pointer mr-[15px]"
                 onClick={() => setOpenWishlist(true)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    setOpenWishlist(true);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <AiOutlineHeart size={30} color="rgb(255 255 255 / 83%)" />
                 <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px] leading-tight text-center">
@@ -184,6 +198,13 @@ const Header = ({ activeHeading }) => {
               <div
                 className="relative cursor-pointer mr-[15px]"
                 onClick={() => setOpenCart(true)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    setOpenCart(true);
+                  }
+                }}
+                role="button"
+                tabIndex={0}
               >
                 <AiOutlineShoppingCart
                   size={30}
@@ -194,15 +215,12 @@ const Header = ({ activeHeading }) => {
                 </span>
               </div>
             </div>
-
-            {/* <div className={`${styles.noramlFlex}`}>
-              <div className="relative cursor-pointer mr-[15px]"> */}
             {isAuthenticated && user ? (
-              <div class="relative inline-block text-left">
+              <div className="relative inline-block text-left">
                 <div>
                   <button
                     type="button"
-                    class="inline-flex text-white rounded-full w-full justify-center gap-x-1.5 bg-[#3bc177] px-3 py-2 text-sm font-semibold cursor-pointer shadow-sm ring-1 ring-inset ring-[#3bc177] hover:bg-[#2bb469]"
+                    className="inline-flex text-white rounded-full w-full justify-center gap-x-1.5 bg-[#3bc177] px-3 py-2 text-sm font-semibold cursor-pointer shadow-sm ring-1 ring-inset ring-[#3bc177] hover:bg-[#2bb469]"
                     id="menu-button"
                     aria-expanded="true"
                     aria-haspopup="true"
@@ -222,21 +240,21 @@ const Header = ({ activeHeading }) => {
                 </div>
 
                 <div
-                  class="absolute  right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                  className="absolute  right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                   role="menu"
                   aria-orientation="vertical"
                   aria-labelledby="menu-button"
-                  tabindex="-1"
+                  tabIndex="-1"
                   id="dropmenu"
                   style={{ display: "none" }}
                 >
-                  <div class="py-1" role="none">
+                  <div className="py-1" role="none">
                     <form method="POST" action="#" role="none">
                       <button
                         type="submit"
-                        class="text-gray-700 block w-full px-4 py-2 text-left text-sm"
+                        className="text-gray-700 block w-full px-4 py-2 text-left text-sm"
                         role="menuitem"
-                        tabindex="-1"
+                        tabIndex="-1"
                         id="menu-item-3"
                         onClick={handleLogout}
                       >
@@ -292,7 +310,7 @@ const Header = ({ activeHeading }) => {
               onClick={() => setOpenCart(true)}
             >
               <AiOutlineShoppingCart size={30} />
-              <span class="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
+              <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                 {cart && cart.length}
               </span>
             </div>
@@ -316,7 +334,7 @@ const Header = ({ activeHeading }) => {
                     onClick={() => setOpenWishlist(true) || setOpen(false)}
                   >
                     <AiOutlineHeart size={30} className="mt-5 ml-3" />
-                    <span class="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
+                    <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
                       {wishlist && wishlist.length}
                     </span>
                   </div>
@@ -339,12 +357,12 @@ const Header = ({ activeHeading }) => {
                 />
                 {searchData && (
                   <div className="absolute  bg-[#fff] z-10 shadow w-full left-0 p-3">
-                    {searchData.map((i) => {
+                    {searchData?.map((i,index) => {
                       const d = i.name;
 
                       const Product_name = d.replace(/\s+/g, "-");
                       return (
-                        <Link to={`/product/${Product_name}`}>
+                        <Link to={`/product/${Product_name}`} key={index}>
                           <div className="flex hover:bg-[#bebcbc] items-center">
                             <img
                               src={i.image_Url[0].url}
@@ -378,7 +396,7 @@ const Header = ({ activeHeading }) => {
                     <button
                       id="dropdownDefaultButton"
                       data-dropdown-toggle="dropdown"
-                      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                      className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                       type="button"
                     >
                       {user.firstName.toUpperCase() +
@@ -386,16 +404,16 @@ const Header = ({ activeHeading }) => {
                     </button>
                     <div
                       id="dropdown"
-                      class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+                      className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
                     >
                       <ul
-                        class="py-2 text-sm text-gray-700 dark:text-gray-200"
+                        className="py-2 text-sm text-gray-700 dark:text-gray-200"
                         aria-labelledby="dropdownDefaultButton"
                       >
                         <li>
                           <a
-                            href="#"
-                            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                            href="/"
+                            className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
                           >
                             Sign out
                           </a>

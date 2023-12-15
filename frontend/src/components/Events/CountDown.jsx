@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { server } from "../../server";
-
+import PropTypes from 'prop-types';
 const CountDown = ({ data }) => {
   const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
 
@@ -43,7 +43,7 @@ const CountDown = ({ data }) => {
     }
 
     return (
-      <span className="text-[25px] text-[#475ad2]">
+      <span className="text-[25px] text-[#475ad2]" key={interval}>
         {timeLeft[interval]} {interval}{" "}
       </span>
     );
@@ -59,5 +59,7 @@ const CountDown = ({ data }) => {
     </div>
   );
 };
-
+CountDown.propTypes = {
+  data: PropTypes.any.isRequired,
+};
 export default CountDown;

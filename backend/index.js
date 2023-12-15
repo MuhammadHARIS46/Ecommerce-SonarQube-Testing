@@ -1,9 +1,10 @@
 const express = require("express");
 const app = express();
+app.disable("x-powered-by");
 const dotenv = require("dotenv");
 const connectToMongo = require("./db");
 const cors = require("cors");
-var cookies = require("cookie-parser");
+const cookies = require("cookie-parser");
 app.use(cookies());
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Credentials", "true");
@@ -21,7 +22,6 @@ app.use(
     credentials: true,
   })
 );
-// app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 
 //routes
 app.use("/api/auth", require("./routes/auth"));

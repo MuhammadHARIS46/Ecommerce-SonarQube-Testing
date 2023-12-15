@@ -1,24 +1,22 @@
 import "./App.css";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { authRoutes, routes } from "./static/data";
 import { useSelector } from "react-redux";
 import Store from "./redux/store";
-import { loadSeller, loadUser } from "./redux/actions/user";
+import { loadSeller } from "./redux/actions/user";
 import { getAllProducts } from "./redux/actions/product";
 import { useEffect, useState } from "react";
 
 function App() {
   const { user, isAuthenticated } = useSelector((state) => state.user);
-  const { isSeller, isLoading } = useSelector((state) => state.seller);
+  const { isSeller } = useSelector((state) => state.seller);
   const [userRoutes, setRoutes] = useState([]);
 
   useEffect(() => {
-    // Store.dispatch(loadUser());
 
     Store.dispatch(loadSeller());
     Store.dispatch(getAllProducts());
-    // Store.dispatch(getAllEvents());
   }, []);
 
   useEffect(() => {
@@ -30,12 +28,12 @@ function App() {
       <BrowserRouter>
         <Toaster />
         <Routes>
-          {userRoutes.map((item) => (
-            <Route path={item.route} element={item.component} />
+          {userRoutes.map((item,index) => (
+            <Route path={item.route} element={item.component} key={index} />
           ))}
           {(!isAuthenticated || !user) &&
-            authRoutes.map((item) => {
-              return <Route path={item.route} element={item.component} />;
+            authRoutes.map((item,index) => {
+              return <Route path={item.route} element={item.component} key={index} />;
             })}
         </Routes>
       </BrowserRouter>

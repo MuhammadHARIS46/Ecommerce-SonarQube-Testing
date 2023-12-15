@@ -63,12 +63,12 @@ const updateProduct = async (product) => {
   }
 };
 
-const updatePrice = async (product) => {
+const updatePrice = async (productId, product) => {
   try {
     const price = await stripe.prices.update(product.stripeProduct.priceId, {
       unit_amount: product.discountPrice,
       currency: "usd",
-      product: product.id,
+      product: productId,
     });
     return price;
   } catch (error) {
@@ -81,6 +81,7 @@ const updateStripeProduct = async (product) => {
   const updatedPrice = await updatePrice(stripeProduct.id, product);
   return { id: stripeProduct.id, priceId: updatedPrice.id };
 };
+
 
 const getCheckoutLink = async (items) => {
   const session = await stripe.checkout.sessions.create({

@@ -19,7 +19,6 @@ exports.isAuthenticated = catchAsyncErrors(async (req, res, next) => {
 });
 
 exports.isSeller = catchAsyncErrors(async (req, res, next) => {
-  //   console.log(req);
   const { seller_token } = req.cookies;
   console.log(req.cookies);
   if (!seller_token) {

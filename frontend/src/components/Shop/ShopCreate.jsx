@@ -1,16 +1,14 @@
 import { React, useState } from "react";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import styles from "../../styles/styles";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { server } from "../../server";
-// import { toast } from "react-toastify";
 import { RxAvatar } from "react-icons/rx";
 import { toast } from "react-hot-toast";
 import Spinner from "../loaders/Spinner";
 
 const ShopCreate = () => {
-  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState();

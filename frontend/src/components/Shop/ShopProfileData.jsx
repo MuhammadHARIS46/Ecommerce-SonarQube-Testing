@@ -1,10 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
 import styles from "../../styles/styles";
 import ProductCard from "../Route/ProductCard/ProductCard";
-import { backend_url } from "../../server";
 import Ratings from "../Products/Ratings";
 import { getAllEventsShop } from "../../redux/actions/event";
 
@@ -21,14 +21,24 @@ const ShopProfileData = ({ isOwner }) => {
 
   const [active, setActive] = useState(1);
 
-  const allReviews =
-    product && product.map((product) => product.reviews).flat();
+  const allReviews = product?.map((product) => product.reviews).flat();
 
   return (
     <div className="w-full">
       <div className="flex w-full items-center justify-between">
         <div className="w-full flex">
-          <div className="flex items-center" onClick={() => setActive(1)}>
+          <div
+            className="flex items-center"
+            onClick={() => setActive(1)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setActive(1);
+              }
+            }}
+            title="Add to wishlist"
+            role="button"
+            tabIndex={0}
+          >
             <h5
               className={`font-[600] text-[20px] ${
                 active === 1 ? "text-red-500" : "text-[#333]"
@@ -37,7 +47,18 @@ const ShopProfileData = ({ isOwner }) => {
               Shop Products
             </h5>
           </div>
-          <div className="flex items-center" onClick={() => setActive(2)}>
+          <div
+            className="flex items-center"
+            onClick={() => setActive(2)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setActive(2);
+              }
+            }}
+            title="Add to wishlist"
+            role="button"
+            tabIndex={0}
+          >
             <h5
               className={`font-[600] text-[20px] ${
                 active === 2 ? "text-red-500" : "text-[#333]"
@@ -47,7 +68,18 @@ const ShopProfileData = ({ isOwner }) => {
             </h5>
           </div>
 
-          <div className="flex items-center" onClick={() => setActive(3)}>
+          <div
+            className="flex items-center"
+            onClick={() => setActive(3)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                setActive(3);
+              }
+            }}
+            title="Add to wishlist"
+            role="button"
+            tabIndex={0}
+          >
             <h5
               className={`font-[600] text-[20px] ${
                 active === 3 ? "text-red-500" : "text-[#333]"
@@ -73,27 +105,20 @@ const ShopProfileData = ({ isOwner }) => {
       <br />
       {active === 1 && (
         <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-          {product &&
-            product.map((i, index) => (
-              <ProductCard data={i} key={index} isShop={true} />
-            ))}
+          {product?.map((i, index) => (
+            <ProductCard data={i} key={index} isShop={true} />
+          ))}
         </div>
       )}
 
       {active === 2 && (
         <div className="w-full">
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-            {events &&
-              events.map((i, index) => (
-                <ProductCard
-                  data={i}
-                  key={index}
-                  isShop={true}
-                  isEvent={true}
-                />
-              ))}
+            {events?.map((i, index) => (
+              <ProductCard data={i} key={index} isShop={true} isEvent={true} />
+            ))}
           </div>
-          {events && events.length === 0 && (
+          {events?.length === 0 && (
             <h5 className="w-full text-center py-5 text-[18px]">
               No Events have for this shop!
             </h5>
@@ -103,9 +128,9 @@ const ShopProfileData = ({ isOwner }) => {
 
       {active === 3 && (
         <div className="w-full">
-          {allReviews &&
-            allReviews.map((item, index) => (
-              <div className="w-full flex my-4">
+          {
+            allReviews?.map((item, index) => (
+              <div className="w-full flex my-4 " key={index}>
                 <img
                   src={item.user.avatar}
                   className="w-[50px] h-[50px] rounded-full"
@@ -121,7 +146,7 @@ const ShopProfileData = ({ isOwner }) => {
                 </div>
               </div>
             ))}
-          {allReviews && allReviews.length === 0 && (
+          {allReviews?.length === 0 && (
             <h5 className="w-full text-center py-5 text-[18px]">
               No Reviews have for this shop!
             </h5>

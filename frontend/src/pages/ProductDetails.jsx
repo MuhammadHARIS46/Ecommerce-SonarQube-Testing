@@ -17,10 +17,10 @@ const ProductDetailsPage = () => {
   useEffect(() => {
     console.log("asdada");
     if (eventData !== null) {
-      const data = allEvents && allEvents.find((i) => i._id === id);
+      const data = allEvents?.find((i) => i._id === id);
       setData(data);
     } else {
-      const data = allProducts && allProducts.find((i) => i._id === id);
+      const data =  allProducts?.find((i) => i._id === id);
       setData(data);
     }
   }, [allProducts, allEvents, id]);

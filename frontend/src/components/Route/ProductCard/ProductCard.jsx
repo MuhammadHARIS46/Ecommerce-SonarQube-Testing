@@ -1,14 +1,12 @@
-import React, { useState } from "react";
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState,useEffect } from "react";
 import {
   AiFillHeart,
-  AiFillStar,
   AiOutlineEye,
   AiOutlineHeart,
   AiOutlineShoppingCart,
-  AiOutlineStar,
 } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import { backend_url } from "../../../server";
 import styles from "../../../styles/styles";
 import { useDispatch, useSelector } from "react-redux";
 import ProductDetailsCard from "../ProductDetailsCard/ProductDetailsCard";
@@ -16,7 +14,6 @@ import {
   addToWishlist,
   removeFromWishlist,
 } from "../../../redux/actions/wishlist";
-import { useEffect } from "react";
 import { addTocart } from "../../../redux/actions/cart";
 import Ratings from "../../Products/Ratings";
 import { toast } from "react-hot-toast";
@@ -29,7 +26,7 @@ const ProductCard = ({ data, isEvent }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    if (wishlist && wishlist.find((i) => i._id === data._id)) {
+    if (  wishlist?.find((i) => i._id === data._id)) {
       setClick(true);
     } else {
       setClick(false);
@@ -47,19 +44,23 @@ const ProductCard = ({ data, isEvent }) => {
   };
 
   const addToCartHandler = (id) => {
-    const isItemExists = cart && cart.find((i) => i._id === id);
+    const isItemExists = cart?.find((i) => i._id === id);
+  
     if (isItemExists) {
       toast.error("Item already in cart!");
-    } else {
-      if (data.stock < 1) {
-        toast.error("Product stock limited!");
-      } else {
-        const cartData = { ...data, qty: data?.minimum };
-        dispatch(addTocart(cartData));
-        toast.success("Item added to cart successfully!");
-      }
+      return;
     }
+  
+    if (data.stock < 1) {
+      toast.error("Product stock limited!");
+      return;
+    }
+  
+    const cartData = { ...data, qty: data?.minimum };
+    dispatch(addTocart(cartData));
+    toast.success("Item added to cart successfully!");
   };
+  
 
   return (
     <>
@@ -74,7 +75,7 @@ const ProductCard = ({ data, isEvent }) => {
           >
             <div className="flex justify-center items-center">
               <img
-                src={data.images && data.images[0]}
+                src={ data?.images[0]}
                 alt=""
                 className="w-200 h-[170px] object-contain"
               />
