@@ -28,22 +28,20 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     console.log("submitted");
   };
 
-  const decrementCount = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
-  };
+  const setCountValue = (value) =>
+    setCount((prevCount) => Math.max(data?.minimum || 1, value));
 
-  const incrementCount = () => {
-    setCount(count + 1);
-  };
+  const decrementCount = () => setCountValue(count - 1);
+
+  const incrementCount = () => setCountValue(count + 1);
+
+  const handleInputChange = (e) => setCountValue(e.target.value);
 
   const addToCartHandler = (id) => {
     const isItemExists = cart?.find((i) => i._id === id);
     if (isItemExists) {
       toast.error("Item already in cart!");
-    }
-    if (data.stock < count) {
+    } else if (data.stock < count) {
       toast.error("Product stock limited!");
     } else {
       const cartData = { ...data, qty: count };
@@ -52,34 +50,25 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     }
   };
 
-  useEffect(() => {
-    if (wishlist?.find((i) => i._id === data._id)) {
-      setClick(true);
-    } else {
-      setClick(false);
-    }
-  }, [wishlist]);
+  const updateWishlistState = () => setClick(!click);
 
-  const removeFromWishlistHandler = (data) => {
-    setClick(!click);
+  const removeFromWishlistHandler = () => {
+    updateWishlistState();
     dispatch(removeFromWishlist(data));
   };
 
-  const handleInputChange = (e) => {
-    const newValue = Math.max(data?.minimum || 1, e.target.value);
-    setCount(newValue);
-  };
-
-  const addToWishlistHandler = (data) => {
-    setClick(!click);
+  const addToWishlistHandler = () => {
+    updateWishlistState();
     dispatch(addToWishlist(data));
   };
 
-  console.log(data);
+  useEffect(() => {
+    setClick(wishlist?.some((i) => i._id === data._id));
+  }, [wishlist, data]);
 
   return (
     <div className="bg-[#fff]">
-      {data ? (
+      {data && (
         <div className="fixed w-full h-screen top-0 left-0 bg-[#00000030] z-40 flex items-center justify-center">
           <div className="w-[90%] 800px:w-[60%] h-[90vh] overflow-y-scroll 800px:h-[75vh] bg-white rounded-md shadow-sm relative p-4">
             <RxCross1
@@ -177,10 +166,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                       <AiFillHeart
                         size={30}
                         className="cursor-pointer"
-                        onClick={() => removeFromWishlistHandler(data)}
+                        onClick={removeFromWishlistHandler}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
-                            removeFromWishlistHandler(data);
+                            removeFromWishlistHandler();
                           }
                         }}
                         color={click ? "red" : "#333"}
@@ -192,10 +181,10 @@ const ProductDetailsCard = ({ setOpen, data }) => {
                       <AiOutlineHeart
                         size={30}
                         className="cursor-pointer"
-                        onClick={() => addToWishlistHandler(data)}
+                        onClick={addToWishlistHandler}
                         onKeyDown={(e) => {
                           if (e.key === "Enter" || e.key === " ") {
-                            addToWishlistHandler(data);
+                            addToWishlistHandler();
                           }
                         }}
                         title="Add to wishlist"
@@ -224,7 +213,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
             </div>
           </div>
         </div>
-      ) : null}
+      ) }
     </div>
   );
 };

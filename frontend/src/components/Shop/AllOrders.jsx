@@ -7,20 +7,15 @@ import { Link } from "react-router-dom";
 import Loader from "../Layout/Loader";
 import { getAllOrdersOfShop } from "../../redux/actions/order";
 import { AiOutlineArrowRight } from "react-icons/ai";
-
 const AllOrders = () => {
   const { orders, isLoading } = useSelector((state) => state.order);
   const { seller } = useSelector((state) => state.seller);
-
   const dispatch = useDispatch();
-
   useEffect(() => {
     dispatch(getAllOrdersOfShop(seller._id));
   }, [dispatch]);
-
   const columns = [
     { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
-
     {
       field: "status",
       headerName: "Status",
@@ -39,7 +34,6 @@ const AllOrders = () => {
       minWidth: 130,
       flex: 0.7,
     },
-
     {
       field: "total",
       headerName: "Total",
@@ -47,7 +41,6 @@ const AllOrders = () => {
       minWidth: 130,
       flex: 0.8,
     },
-
     {
       field: " ",
       flex: 1,
@@ -66,17 +59,12 @@ const AllOrders = () => {
       },
     },
   ];
-
-  const row = [];
-
-    orders?.forEach((item) => {
-      row.push({
-        id: item._id,
-        itemsQty: item.cart.length,
-        total: "US$ " + item.totalPrice,
-        status: item.status,
-      });
-    });
+  const rows = orders?.map((item) => ({
+    id: item._id,
+    itemsQty: item.cart.length,
+    total: `US$ ${item.totalPrice}`,
+    status: item.status,
+  })) || [];
 
   return (
     <>
@@ -85,7 +73,7 @@ const AllOrders = () => {
       ) : (
         <div className="w-full mx-8 pt-1 mt-10 bg-[#99c7ff]">
           <DataGrid
-            rows={row}
+            rows={rows}
             columns={columns}
             pageSize={10}
             disableSelectionOnClick
@@ -96,5 +84,4 @@ const AllOrders = () => {
     </>
   );
 };
-
 export default AllOrders;

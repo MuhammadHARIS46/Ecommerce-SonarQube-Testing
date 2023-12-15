@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import {
@@ -10,7 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { getAllProductsShop } from "../../redux/actions/product";
-import {  server } from "../../server";
+import { server } from "../../server";
 import styles from "../../styles/styles";
 import {
   addToWishlist,
@@ -33,7 +32,7 @@ const ProductDetails = ({ data }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getAllProductsShop(data?.shop._id));
-    if (wishlist && wishlist.find((i) => i._id === data?._id)) {
+    if (wishlist?.find((i) => i._id === data?._id)) {
       setClick(true);
     } else {
       setClick(false);
@@ -66,30 +65,29 @@ const ProductDetails = ({ data }) => {
   };
 
   const addToCartHandler = (id) => {
-    const isItemExists =  cart?.find((i) => i._id === id);
+    const isItemExists = cart?.find((i) => i._id === id);
     if (isItemExists) {
       toast.error("Item already in cart!");
-    } 
-      if (data.stock < 1) {
-        toast.error("Product stock limited!");
-      } 
-      else {
-        const cartData = { ...data, qty: count };
-        dispatch(addTocart(cartData));
-        toast.success("Item added to cart successfully!");
-      }
+    }
+    if (data.stock < 1) {
+      toast.error("Product stock limited!");
+    } else {
+      const cartData = { ...data, qty: count };
+      dispatch(addTocart(cartData));
+      toast.success("Item added to cart successfully!");
+    }
   };
 
-  const totalReviewsLength =
-    product?.reduce((acc, product) => acc + product.reviews.length, 0);
+  const totalReviewsLength = product?.reduce(
+    (acc, product) => acc + product.reviews.length,
+    0
+  );
 
-  const totalRatings =
-    
-    product?.reduce(
-      (acc, product) =>
-        acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
-      0
-    );
+  const totalRatings = product?.reduce(
+    (acc, product) =>
+      acc + product.reviews.reduce((sum, review) => sum + review.rating, 0),
+    0
+  );
 
   const avg = totalRatings / totalReviewsLength || 0;
 
@@ -123,34 +121,29 @@ const ProductDetails = ({ data }) => {
         <div className="w-full py-5">
           <div className="block w-full ">
             <div className="w-full md:w-[50%]">
-              <img
-                src={ data?.images[select]}
-                alt=""
-                className="w-[80%]"
-              />
+              <img src={data?.images[select]} alt="" className="w-[80%]" />
               <div className="w-full flex">
-                {
-                  data?.images.map((i, index) => (
-                    <div
-                      className={`${
-                        select === 0 ? "border" : "null"
-                      } cursor-pointer`}
-                    >
-                      <img
-                        src={i}
-                        alt=""
-                        className="h-[200px] overflow-hidden mr-3 mt-3"
-                        onClick={() => setSelect(index)}
-                        onKeyDown={(e) => {
-                          if (e.key === "Enter" || e.key === " ") {
-                            setSelect(index);
-                          }
-                        }}
-                        role="button"
-                        tabIndex={0}
-                      />
-                    </div>
-                  ))}
+                {data?.images.map((i, index) => (
+                  <div
+                    className={`${
+                      select === 0 ? "border" : "null"
+                    } cursor-pointer`}
+                  >
+                    <img
+                      src={i}
+                      alt=""
+                      className="h-[200px] overflow-hidden mr-3 mt-3"
+                      onClick={() => setSelect(index)}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          setSelect(index);
+                        }
+                      }}
+                      role="button"
+                      tabIndex={0}
+                    />
+                  </div>
+                ))}
                 <div
                   className={`${
                     select === 1 ? "border" : "null"
@@ -365,33 +358,30 @@ const ProductDetailsInfo = ({
           ) : null}
         </div>
       </div>
-      {active === 1 ? (
-        <>
-          <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
-            {data.description}
-          </p>
-        </>
-      ) : null}
+      {active === 1 && (
+        <p className="py-2 text-[18px] leading-8 pb-10 whitespace-pre-line">
+          {data.description}
+        </p>
+      )}
 
-      {active === 2 ? (
+      {active === 2 && (
         <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
-          {
-            data?.reviews.map((item, index) => (
-              <div className="w-full flex my-2">
-                <img
-                  src={item.user.avatar}
-                  alt=""
-                  className="w-[50px] h-[50px] rounded-full"
-                />
-                <div className="pl-2 ">
-                  <div className="w-full flex items-center">
-                    <h1 className="font-[500] mr-3">{item.user.name}</h1>
-                    <Ratings rating={data?.ratings} />
-                  </div>
-                  <p>{item.comment}</p>
+          {data?.reviews.map((item, index) => (
+            <div className="w-full flex my-2" key={index}>
+              <img
+                src={item.user.avatar}
+                alt=""
+                className="w-[50px] h-[50px] rounded-full"
+              />
+              <div className="pl-2 ">
+                <div className="w-full flex items-center">
+                  <h1 className="font-[500] mr-3">{item.user.name}</h1>
+                  <Ratings rating={data?.ratings} />
                 </div>
+                <p>{item.comment}</p>
               </div>
-            ))}
+            </div>
+          ))}
 
           <div className="w-full flex justify-center">
             {data?.reviews.length === 0 && (
@@ -399,7 +389,7 @@ const ProductDetailsInfo = ({
             )}
           </div>
         </div>
-      ) : null}
+      )}
 
       {active === 3 && (
         <div className="w-full block md:flex p-5">
@@ -431,9 +421,7 @@ const ProductDetailsInfo = ({
               </h5>
               <h5 className="font-[600] pt-3">
                 Total Products:{" "}
-                <span className="font-[500]">
-                  {products?.length}
-                </span>
+                <span className="font-[500]">{products?.length}</span>
               </h5>
               <h5 className="font-[600] pt-3">
                 Total Reviews:{" "}
