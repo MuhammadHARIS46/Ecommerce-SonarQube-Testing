@@ -89,9 +89,7 @@ const CreateEvent = () => {
       <form onSubmit={handleSubmit}>
         <br />
         <div>
-          <label className="pb-2">
             Name <span className="text-red-500">*</span>
-          </label>
           <input
             type="text"
             name="name"
@@ -103,9 +101,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Description <span className="text-red-500">*</span>
-          </label>
           <textarea
             cols="30"
             required
@@ -120,9 +116,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Category <span className="text-red-500">*</span>
-          </label>
           <select
             className="w-full mt-2 border h-[35px] rounded-[5px]"
             value={category}
@@ -163,9 +157,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Price (With Discount) <span className="text-red-500">*</span>
-          </label>
           <input
             type="number"
             name="price"
@@ -177,9 +169,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Product Stock <span className="text-red-500">*</span>
-          </label>
           <input
             type="number"
             name="price"
@@ -191,9 +181,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Event Start Date <span className="text-red-500">*</span>
-          </label>
           <input
             type="date"
             name="price"
@@ -207,9 +195,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Event End Date <span className="text-red-500">*</span>
-          </label>
           <input
             type="date"
             name="price"
@@ -223,9 +209,7 @@ const CreateEvent = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Upload Images <span className="text-red-500">*</span>
-          </label>
           <input
             type="file"
             name=""

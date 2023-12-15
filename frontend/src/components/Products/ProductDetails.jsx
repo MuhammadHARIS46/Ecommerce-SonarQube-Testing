@@ -61,7 +61,6 @@ const ProductDetails = ({ data }) => {
   };
 
   const handleInputChange = (e) => {
-    const minValue = 0;
     const newValue = Math.max(data?.minimum || 1, e.target.value);
     setCount(newValue);
   };
@@ -70,20 +69,19 @@ const ProductDetails = ({ data }) => {
     const isItemExists =  cart?.find((i) => i._id === id);
     if (isItemExists) {
       toast.error("Item already in cart!");
-    } else {
+    } 
       if (data.stock < 1) {
         toast.error("Product stock limited!");
-      } else {
+      } 
+      else {
         const cartData = { ...data, qty: count };
         dispatch(addTocart(cartData));
         toast.success("Item added to cart successfully!");
       }
-    }
   };
 
   const totalReviewsLength =
-    product &&
-    product.reduce((acc, product) => acc + product.reviews.length, 0);
+    product?.reduce((acc, product) => acc + product.reviews.length, 0);
 
   const totalRatings =
     

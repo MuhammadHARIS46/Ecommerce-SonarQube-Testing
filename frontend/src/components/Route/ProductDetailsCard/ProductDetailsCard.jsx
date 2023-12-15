@@ -25,7 +25,7 @@ const ProductDetailsCard = ({ setOpen, data }) => {
   const [click, setClick] = useState(false);
 
   const handleMessageSubmit = () => {
-    console.log("submitted")
+    console.log("submitted");
   };
 
   const decrementCount = () => {
@@ -42,14 +42,13 @@ const ProductDetailsCard = ({ setOpen, data }) => {
     const isItemExists = cart?.find((i) => i._id === id);
     if (isItemExists) {
       toast.error("Item already in cart!");
+    }
+    if (data.stock < count) {
+      toast.error("Product stock limited!");
     } else {
-      if (data.stock < count) {
-        toast.error("Product stock limited!");
-      } else {
-        const cartData = { ...data, qty: count };
-        dispatch(addTocart(cartData));
-        toast.success("Item added to cart successfully!");
-      }
+      const cartData = { ...data, qty: count };
+      dispatch(addTocart(cartData));
+      toast.success("Item added to cart successfully!");
     }
   };
 

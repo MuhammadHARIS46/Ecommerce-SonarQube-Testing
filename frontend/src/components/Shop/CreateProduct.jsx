@@ -62,13 +62,10 @@ const CreateProduct = () => {
   return (
     <div className="w-[90%] 800px:w-[50%] bg-[#cacbcd] shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
       <h5 className="text-[30px] font-Poppins text-center">Create Product</h5>
-      {/* create product form */}
       <form onSubmit={handleSubmit}>
         <br />
         <div>
-          <label className="pb-2">
-            Name <span className="text-red-500">*</span>
-          </label>
+          Name <span className="text-red-500">*</span>
           <input
             type="text"
             name="name"
@@ -81,9 +78,7 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
-            Description <span className="text-red-500">*</span>
-          </label>
+          Description <span className="text-red-500">*</span>
           <textarea
             cols="30"
             required
@@ -98,21 +93,18 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
-            Category <span className="text-red-500">*</span>
-          </label>
+          Category <span className="text-red-500">*</span>
           <select
             className="w-full mt-2 border h-[35px] rounded-[5px]"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           >
             <option value="Choose a category">Choose a category</option>
-            {
-              categoriesData?.map((i) => (
-                <option value={i.title} key={i.title}>
-                  {i.title}
-                </option>
-              ))}
+            {categoriesData?.map((i) => (
+              <option value={i.title} key={i.title}>
+                {i.title}
+              </option>
+            ))}
           </select>
         </div>
         <br />
@@ -143,9 +135,7 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Price (With Discount) <span className="text-red-500">*</span>
-          </label>
           <input
             type="number"
             name="price"
@@ -158,9 +148,7 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Product Stock <span className="text-red-500">*</span>
-          </label>
           <input
             type="number"
             name="price"
@@ -174,9 +162,7 @@ const CreateProduct = () => {
         <div>
           <br />
 
-          <label className="pb-2">
             Minimum Quantity <span className="text-red-500">*</span>
-          </label>
           <input
             type="number"
             name="minimum"
@@ -189,9 +175,7 @@ const CreateProduct = () => {
         </div>
         <br />
         <div>
-          <label className="pb-2">
             Upload Images <span className="text-red-500">*</span>
-          </label>
           <input
             type="file"
             name=""
@@ -205,15 +189,14 @@ const CreateProduct = () => {
             <label htmlFor="upload">
               <AiOutlinePlusCircle size={30} className="mt-3" color="#555" />
             </label>
-            {
-              images?.map((i) => (
-                <img
-                  src={URL.createObjectURL(i)}
-                  key={i}
-                  alt=""
-                  className="h-[120px] w-[120px] object-cover m-2"
-                />
-              ))}
+            {images?.map((i) => (
+              <img
+                src={URL.createObjectURL(i)}
+                key={i}
+                alt=""
+                className="h-[120px] w-[120px] object-cover m-2"
+              />
+            ))}
           </div>
           <br />
           <div>
